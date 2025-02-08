@@ -5,12 +5,15 @@ compatibility_date = "2024-01-01"
 command = "npm run build"
 output_directory = ".next"
 
+[pages]
+pages_build_output_dir = ".next"
+
 [env.production]
 NODE_ENV = "production"
 
 # KV Namespaceの設定
 kv_namespaces = [
-  { binding = "BLOG_POSTS", id = "your_kv_namespace_id" }
+  { binding = "BLOG_POSTS", id = "62b20848b258450c865c424216be1292" }
 ]
 
 # 環境変数の設定
