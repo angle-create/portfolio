@@ -1,24 +1,20 @@
 import { NextResponse } from 'next/server'
-import sgMail from '@sendgrid/mail'
+import { Resend } from 'resend'
 
-// SendGrid APIキーを設定
-const apiKey = process.env.SENDGRID_API_KEY
-if (apiKey) {
-  sgMail.setApiKey(apiKey)
-}
+const resend = new Resend(process.env.RESEND_API_KEY)
 
 export async function POST(request: Request) {
   try {
     const { name, email, subject, message } = await request.json()
 
-    if (!apiKey) {
-      throw new Error('SendGrid API key is not set')
+    if (!process.env.RESEND_API_KEY) {
+      throw new Error('Resend API key is not set')
     }
 
-    // メール本文を作成
-    const mailData = {
-      to: process.env.NEXT_PUBLIC_CONTACT_EMAIL,
-      from: process.env.NEXT_PUBLIC_CONTACT_EMAIL!, // 送信元は認証済みのメールアドレスである必要があります
+    // 管理者宛のメール
+    const adminEmail = await resend.emails.send({
+      from: `Contact Form <${process.env.NEXT_PUBLIC_CONTACT_EMAIL}>`,
+      to: process.env.NEXT_PUBLIC_CONTACT_EMAIL!,
       subject: `[ポートフォリオ] ${subject}`,
       text: `
 名前: ${name}
@@ -35,12 +31,12 @@ ${message}
 <p><strong>メッセージ:</strong></p>
 <p>${message.replace(/\n/g, '<br>')}</p>
       `,
-    }
+    })
 
-    // 自動返信メールのデータ
-    const autoReplyData = {
+    // 自動返信メール
+    const autoReply = await resend.emails.send({
+      from: `Portfolio <${process.env.NEXT_PUBLIC_CONTACT_EMAIL}>`,
       to: email,
-      from: process.env.NEXT_PUBLIC_CONTACT_EMAIL!,
       subject: '【自動返信】お問い合わせありがとうございます',
       text: `
 ${name} 様
@@ -70,13 +66,7 @@ ${message}
 <p>内容を確認次第、改めてご連絡させていただきます。</p>
 <p>しばらくお待ちくださいますようお願い申し上げます。</p>
       `,
-    }
-
-    // メールを送信
-    await Promise.all([
-      sgMail.send(mailData),
-      sgMail.send(autoReplyData),
-    ])
+    })
 
     return NextResponse.json({ success: true })
   } catch (error) {

@@ -22,4 +22,4 @@ NEXT_PUBLIC_CONTACT_ADDRESS = "岩手県盛岡市津志田町二丁目8-10"
 # シークレット環境変数（Cloudflareダッシュボードで設定）
 # - JWT_SECRET
 # - ADMIN_PASSWORD
-# - SENDGRID_API_KEY 
+# - RESEND_API_KEY 
