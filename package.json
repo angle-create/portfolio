@@ -8,10 +8,10 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "rimraf .next out && next build",
     "start": "next start",
     "lint": "next lint",
-    "pages:build": "next build",
+    "pages:build": "rimraf .next out && next build",
     "pages:deploy": "wrangler pages deploy out"
   },
   "dependencies": {

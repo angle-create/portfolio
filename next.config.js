@@ -54,6 +54,9 @@ const nextConfig = {
               warnings: false,
               comparisons: false,
               inline: 2,
+              drop_console: true,
+              drop_debugger: true,
+              pure_funcs: ['console.log'],
             },
             mangle: {
               safari10: true,
@@ -66,6 +69,29 @@ const nextConfig = {
           },
         }),
       ],
+      splitChunks: {
+        chunks: 'all',
+        maxInitialRequests: 25,
+        minSize: 20000,
+        maxSize: 24000000,
+        cacheGroups: {
+          default: false,
+          vendors: false,
+          framework: {
+            chunks: 'all',
+            name: 'framework',
+            test: /(?<!node_modules.*)[\\/]node_modules[\\/](react|react-dom|scheduler|prop-types|use-subscription)[\\/]/,
+            priority: 40,
+            enforce: true,
+          },
+          lib: {
+            test: /[\\/]node_modules[\\/]/,
+            priority: 30,
+            minChunks: 1,
+            reuseExistingChunk: true,
+          },
+        },
+      },
     }
 
     return config

@@ -5,7 +5,10 @@ compatibility_date = "2024-01-01"
 command = "npm run build"
 
 [site]
-bucket = ".next"
+bucket = "out"
+
+# ビルド出力ディレクトリの設定
+pages_build_output_dir = "out"
 
 [env.production]
 NODE_ENV = "production"
