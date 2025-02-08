@@ -37,10 +37,18 @@ const nextConfig = {
           lib: {
             test: /[\\/]node_modules[\\/]/,
             name(module) {
-              const packageName = module.context.match(
-                /[\\/]node_modules[\\/](.*?)([\\/]|$)/
-              )[1]
-              return `npm.${packageName.replace('@', '')}`
+              // モジュールのコンテキストが存在することを確認
+              if (!module.context) {
+                return 'vendor'
+              }
+              // node_modulesからパッケージ名を抽出
+              const match = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)
+              if (!match || !match[1]) {
+                return 'vendor'
+              }
+              // スコープ付きパッケージ対応
+              const packageName = match[1]
+              return `npm.${packageName.replace('@', '').replace(/[\\/]/g, '_')}`
             },
             chunks: 'all',
             priority: 1,
