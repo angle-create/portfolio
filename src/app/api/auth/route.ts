@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
-import { sign, verify } from 'jsonwebtoken'
+import * as jose from 'jose'
 
 const JWT_SECRET = process.env.JWT_SECRET
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD
@@ -9,6 +9,9 @@ const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD
 console.log('JWT_SECRET:', JWT_SECRET)
 console.log('ADMIN_PASSWORD:', ADMIN_PASSWORD)
 console.log('NODE_ENV:', process.env.NODE_ENV)
+
+export const runtime = 'edge'
+export const preferredRegion = ['all']
 
 export async function POST(request: Request) {
   try {
@@ -31,7 +34,13 @@ export async function POST(request: Request) {
       throw new Error('JWT_SECRET is not set')
     }
 
-    const token = sign({ role: 'admin' }, JWT_SECRET, { expiresIn: '24h' })
+    // JWTの生成
+    const secret = new TextEncoder().encode(JWT_SECRET)
+    const token = await new jose.SignJWT({ role: 'admin' })
+      .setProtectedHeader({ alg: 'HS256' })
+      .setExpirationTime('24h')
+      .sign(secret)
+
     console.log('Generated token:', token ? 'success' : 'failed')
 
     // レスポンスオブジェクトを作成
@@ -45,7 +54,7 @@ export async function POST(request: Request) {
     response.cookies.set('auth_token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax', // 'strict'から'lax'に変更
+      sameSite: 'lax',
       maxAge: 60 * 60 * 24, // 24時間
       path: '/',
     })
@@ -71,8 +80,10 @@ export async function GET(request: Request) {
     }
 
     try {
-      const decoded = verify(token, JWT_SECRET)
-      console.log('Token verified:', decoded)
+      // JWTの検証
+      const secret = new TextEncoder().encode(JWT_SECRET)
+      const { payload } = await jose.jwtVerify(token, secret)
+      console.log('Token verified:', payload)
       return NextResponse.json({ isAuthenticated: true })
     } catch (error) {
       console.error('Token verification failed:', error)

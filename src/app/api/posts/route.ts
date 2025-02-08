@@ -13,6 +13,9 @@ declare global {
   const BLOG_POSTS: KVNamespace
 }
 
+export const runtime = 'edge'
+export const preferredRegion = ['all']
+
 export async function GET() {
   try {
     const { keys } = await BLOG_POSTS.list()

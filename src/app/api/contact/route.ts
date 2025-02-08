@@ -3,6 +3,9 @@ import { Resend } from 'resend'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
+export const runtime = 'edge'
+export const preferredRegion = ['all']
+
 export async function POST(request: Request) {
   try {
     const { name, email, subject, message } = await request.json()
