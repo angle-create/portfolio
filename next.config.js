@@ -6,6 +6,10 @@ const nextConfig = {
   experimental: {
     optimizeCss: true,
   },
+  // Edge Runtime対応の設定
+  experimental: {
+    runtime: 'experimental-edge',
+  },
   webpack: (config, { isServer }) => {
     if (!isServer) {
       // クライアントサイドのビルドでは@sendgrid/mailを使用しない
