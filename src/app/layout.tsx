@@ -14,6 +14,15 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: 'Portfolio',
   description: 'My professional portfolio website',
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+    apple: '/favicon.ico',
+    other: {
+      rel: 'apple-touch-icon-precomposed',
+      url: '/favicon.ico',
+    },
+  },
 }
 
 export default function RootLayout({
