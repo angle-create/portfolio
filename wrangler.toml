@@ -22,7 +22,7 @@ for = "/_next/static/js/*"
 Content-Type = "application/javascript"
 
 [[headers]]
-for = "/favicon.ico"
+for = "/static/images/favicon.ico"
 [headers.values]
 Content-Type = "image/x-icon"
 
