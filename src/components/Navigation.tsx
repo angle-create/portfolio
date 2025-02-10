@@ -2,7 +2,6 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { motion } from 'framer-motion'
 
 const navItems = [
   { href: '/', label: 'Home' },
@@ -35,10 +34,7 @@ export default function Navigation() {
               >
                 {item.label}
                 {pathname === item.href && (
-                  <motion.div
-                    layoutId="underline"
-                    className="absolute left-0 top-full h-0.5 w-full bg-secondary"
-                  />
+                  <div className="absolute left-0 top-full h-0.5 w-full bg-secondary slide-in" />
                 )}
               </Link>
             ))}

@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
 
 export default function ThemeToggle() {
   const [isDark, setIsDark] = useState(false)
@@ -38,10 +37,7 @@ export default function ThemeToggle() {
       className="rounded-lg p-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
       aria-label="Toggle theme"
     >
-      <motion.div
-        animate={{ rotate: isDark ? 360 : 0 }}
-        transition={{ duration: 0.5 }}
-      >
+      <div className={`transform transition-transform duration-500 ${isDark ? 'rotate-360' : 'rotate-0'}`}>
         {isDark ? (
           <svg
             className="w-6 h-6 text-yellow-500"
@@ -71,7 +67,7 @@ export default function ThemeToggle() {
             />
           </svg>
         )}
-      </motion.div>
+      </div>
     </button>
   )
 } 

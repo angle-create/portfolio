@@ -38,4 +38,84 @@
   .text-gradient {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-secondary to-accent;
   }
+
+  /* アニメーション用のユーティリティクラス */
+  .fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+    opacity: 0;
+  }
+
+  .slide-up {
+    animation: slideUp 0.5s ease-out forwards;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .slide-in {
+    animation: slideIn 0.5s ease-out forwards;
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+
+  .stagger-item {
+    opacity: 0;
+    animation: fadeIn 0.5s ease-out forwards;
+  }
+
+  .stagger-container > * {
+    animation-delay: calc(var(--index) * 0.1s);
+  }
+
+  .skill-bar {
+    width: 0;
+    animation: expandWidth 1s ease-out forwards;
+  }
+
+  .rotate-360 {
+    transform: rotate(360deg);
+  }
+
+  .rotate-0 {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes expandWidth {
+  from {
+    width: 0;
+  }
+  to {
+    width: var(--width);
+  }
 } 

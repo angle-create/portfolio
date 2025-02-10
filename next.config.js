@@ -1,20 +1,23 @@
-const TerserPlugin = require('terser-webpack-plugin')
-
 /** @type {import('next').NextConfig} */
+const path = require('path')
+
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   // 静的エクスポートの設定
   output: 'export',
   distDir: 'out',
-  trailingSlash: true,
   images: {
     unoptimized: true,
   },
-  experimental: {
-    optimizeCss: true,
-    optimizePackageImports: ['framer-motion'],
+  // キャッシュの設定
+  onDemandEntries: {
+    maxInactiveAge: 60 * 1000, // 1分
+    pagesBufferLength: 2,
   },
+  // experimental: {
+  //   optimizeCss: true,
+  // },
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.resolve.fallback = {
@@ -32,95 +35,60 @@ const nextConfig = {
         os: false,
         path: false,
       }
-    }
 
-    // グローバルオブジェクトの設定
-    config.output = {
-      ...config.output,
-      globalObject: 'globalThis',
-    }
+      // グローバルオブジェクトの設定
+      config.output = {
+        ...config.output,
+        globalObject: 'globalThis',
+      }
 
-    // 最適化設定
-    config.optimization = {
-      minimize: true,
-      minimizer: [
-        new TerserPlugin({
-          terserOptions: {
-            parse: {
-              ecma: 8,
+      // チャンクサイズの制限を設定
+      config.optimization = {
+        ...config.optimization,
+        minimize: true,
+        splitChunks: {
+          chunks: 'all',
+          maxInitialRequests: 25,
+          minSize: 20000,
+          maxSize: 20000000, // 20MB
+          maxAsyncSize: 20000000, // 20MB
+          maxInitialSize: 20000000, // 20MB
+          cacheGroups: {
+            default: false,
+            vendors: false,
+            framework: {
+              chunks: 'all',
+              name: 'framework',
+              test: /[\\/]node_modules[\\/](react|react-dom|scheduler|next)[\\/]/,
+              priority: 40,
+              enforce: true,
+              maxSize: 20000000, // 20MB
             },
-            compress: {
-              ecma: 5,
-              warnings: false,
-              comparisons: false,
-              inline: 2,
-              drop_console: true,
-              drop_debugger: true,
-              pure_funcs: ['console.log'],
-              passes: 3,
-              reduce_vars: true,
-              reduce_funcs: true,
+            commons: {
+              name: 'commons',
+              chunks: 'all',
+              minChunks: 2,
+              priority: 20,
+              maxSize: 20000000, // 20MB
             },
-            mangle: {
-              safari10: true,
-              toplevel: true,
+            lib: {
+              test: /[\\/]node_modules[\\/]/,
+              chunks: 'all',
+              name(module, chunks, cacheGroupKey) {
+                return `${cacheGroupKey}-${module.type}`;
+              },
+              priority: 15,
+              minChunks: 1,
+              reuseExistingChunk: true,
+              maxSize: 20000000, // 20MB
             },
-            output: {
-              ecma: 5,
-              comments: false,
-              ascii_only: true,
-            },
-          },
-        }),
-      ],
-      splitChunks: {
-        chunks: 'all',
-        maxInitialRequests: 25,
-        minSize: 5000,
-        maxSize: 15000,
-        cacheGroups: {
-          default: false,
-          vendors: false,
-          framework: {
-            chunks: 'all',
-            name: 'framework',
-            test: /(?<!node_modules.*)[\\/]node_modules[\\/](react|react-dom|scheduler|prop-types|use-subscription)[\\/]/,
-            priority: 40,
-            enforce: true,
-          },
-          commons: {
-            name: 'commons',
-            chunks: 'all',
-            minChunks: 2,
-            priority: 20,
-          },
-          lib: {
-            test: /[\\/]node_modules[\\/]/,
-            priority: 30,
-            minChunks: 1,
-            reuseExistingChunk: true,
-          },
-          styles: {
-            name: 'styles',
-            test: /\.(css|scss)$/,
-            chunks: 'all',
-            enforce: true,
-          },
-          framerMotion: {
-            test: /[\\/]node_modules[\\/]framer-motion[\\/]/,
-            name: 'framer-motion',
-            chunks: 'all',
-            priority: 50,
           },
         },
-      },
-      runtimeChunk: {
-        name: 'runtime',
-      },
+      }
     }
-
     return config
   },
 }
+
 
 module.exports = nextConfig 

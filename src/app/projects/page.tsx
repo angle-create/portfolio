@@ -1,7 +1,5 @@
 'use client'
 
-import { motion } from 'framer-motion'
-
 const projects = [
   {
     id: 1,
@@ -32,58 +30,30 @@ const projects = [
   },
 ]
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
-}
-
-const itemVariants = {
-  hidden: { y: 20, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-  },
-}
-
 export default function Projects() {
   return (
     <div className="container py-20">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="text-center mb-12"
-      >
+      <div className="text-center mb-12 slide-up">
         <h1 className="text-4xl md:text-6xl font-bold mb-6">
           <span className="text-gradient">Projects</span>
         </h1>
         <p className="text-xl text-gray-600 dark:text-gray-300">
           私が手がけた主要なプロジェクトをご紹介します
         </p>
-      </motion.div>
+      </div>
 
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-      >
-        {projects.map((project) => (
-          <motion.div
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 stagger-container">
+        {projects.map((project, index) => (
+          <div
             key={project.id}
-            variants={itemVariants}
-            className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden"
+            className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden stagger-item"
+            style={{ '--index': index } as React.CSSProperties}
           >
             <div className="aspect-w-16 aspect-h-9 bg-gray-100 dark:bg-gray-700">
-              {/* プロジェクトの画像を表示（実際の画像に置き換えてください） */}
               <div className="w-full h-48 bg-gradient-to-r from-secondary to-accent opacity-50" />
             </div>
             <div className="p-6">
-              <h3 className="text-2xl font-bold mb-2">{project.title}</h3>
+              <h2 className="text-2xl font-bold mb-2">{project.title}</h2>
               <p className="text-gray-600 dark:text-gray-300 mb-4">
                 {project.description}
               </p>
@@ -91,7 +61,7 @@ export default function Projects() {
                 {project.technologies.map((tech) => (
                   <span
                     key={tech}
-                    className="px-3 py-1 text-sm bg-gray-100 dark:bg-gray-700 rounded-full"
+                    className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded-full text-sm"
                   >
                     {tech}
                   </span>
@@ -116,9 +86,9 @@ export default function Projects() {
                 </a>
               </div>
             </div>
-          </motion.div>
+          </div>
         ))}
-      </motion.div>
+      </div>
     </div>
   )
 } 

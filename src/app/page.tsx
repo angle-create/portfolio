@@ -1,48 +1,31 @@
 'use client'
 
-import { motion } from 'framer-motion'
-
 export default function Home() {
   return (
     <div className="container py-20">
       {/* Hero Section */}
-      <motion.section
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="text-center mb-20"
-      >
+      <section className="text-center mb-20 slide-up">
         <h1 className="text-4xl md:text-6xl font-bold mb-6">
           <span className="text-gradient">Welcome to My Portfolio</span>
         </h1>
         <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-300">
           フルスタックエンジニア & クリエイター
         </p>
-      </motion.section>
+      </section>
 
       {/* About Section */}
-      <motion.section
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.2 }}
-        className="mb-20"
-      >
+      <section className="mb-20 fade-in" style={{ '--index': '1' } as React.CSSProperties}>
         <h2 className="text-3xl font-bold mb-6">About Me</h2>
         <p className="text-lg text-gray-600 dark:text-gray-300">
           最新のウェブ技術を活用して、美しく機能的なウェブアプリケーションを作成することに情熱を注いでいます。
           Cloudflareの各種サービスを活用し、高パフォーマンスで安全なウェブサイトの開発に取り組んでいます。
         </p>
-      </motion.section>
+      </section>
 
       {/* Skills Section */}
-      <motion.section
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.4 }}
-        className="mb-20"
-      >
+      <section className="mb-20 fade-in" style={{ '--index': '2' } as React.CSSProperties}>
         <h2 className="text-3xl font-bold mb-6">Skills</h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 stagger-container">
           {[
             'Next.js',
             'TypeScript',
@@ -52,23 +35,20 @@ export default function Home() {
             'Node.js',
             'GraphQL',
             'AWS',
-          ].map((skill) => (
+          ].map((skill, index) => (
             <div
               key={skill}
-              className="p-4 bg-gray-100 dark:bg-gray-800 rounded-lg text-center"
+              className="p-4 bg-gray-100 dark:bg-gray-800 rounded-lg text-center stagger-item"
+              style={{ '--index': index } as React.CSSProperties}
             >
               {skill}
             </div>
           ))}
         </div>
-      </motion.section>
+      </section>
 
       {/* Latest Projects */}
-      <motion.section
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.6 }}
-      >
+      <section className="fade-in" style={{ '--index': '3' } as React.CSSProperties}>
         <h2 className="text-3xl font-bold mb-6">Latest Projects</h2>
         <div className="grid md:grid-cols-2 gap-6">
           {[1, 2].map((project) => (
@@ -86,7 +66,7 @@ export default function Home() {
             </div>
           ))}
         </div>
-      </motion.section>
+      </section>
     </div>
   )
 } 

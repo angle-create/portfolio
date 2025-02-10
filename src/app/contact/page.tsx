@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { motion } from 'framer-motion'
 
 interface ContactInfo {
   icon: string
@@ -9,6 +8,26 @@ interface ContactInfo {
   value: string
   link?: string
 }
+
+const contactInfo: ContactInfo[] = [
+  {
+    icon: '📧',
+    label: 'メールアドレス',
+    value: process.env.NEXT_PUBLIC_CONTACT_EMAIL || '',
+    link: `mailto:${process.env.NEXT_PUBLIC_CONTACT_EMAIL}`,
+  },
+  {
+    icon: '📱',
+    label: '電話番号',
+    value: process.env.NEXT_PUBLIC_CONTACT_PHONE || '',
+    link: `tel:${process.env.NEXT_PUBLIC_CONTACT_PHONE}`,
+  },
+  {
+    icon: '📍',
+    label: '所在地',
+    value: process.env.NEXT_PUBLIC_CONTACT_ADDRESS || '',
+  },
+]
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -19,43 +38,6 @@ export default function Contact() {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<'success' | 'error' | null>(null)
-
-  const contactInfo: ContactInfo[] = [
-    {
-      icon: '📧',
-      label: 'メール',
-      value: process.env.NEXT_PUBLIC_CONTACT_EMAIL || '',
-      link: `mailto:${process.env.NEXT_PUBLIC_CONTACT_EMAIL}`,
-    },
-    {
-      icon: '📱',
-      label: '電話',
-      value: process.env.NEXT_PUBLIC_CONTACT_PHONE || '',
-      link: `tel:${process.env.NEXT_PUBLIC_CONTACT_PHONE}`,
-    },
-    {
-      icon: '📍',
-      label: '住所',
-      value: process.env.NEXT_PUBLIC_CONTACT_ADDRESS || '',
-    },
-    {
-      icon: '💬',
-      label: 'LINE',
-      value: process.env.NEXT_PUBLIC_CONTACT_LINE || '',
-    },
-    {
-      icon: '🐦',
-      label: 'Twitter',
-      value: process.env.NEXT_PUBLIC_CONTACT_TWITTER || '',
-      link: `https://twitter.com/${process.env.NEXT_PUBLIC_CONTACT_TWITTER?.replace('@', '')}`,
-    },
-    {
-      icon: '💻',
-      label: 'GitHub',
-      value: process.env.NEXT_PUBLIC_CONTACT_GITHUB || '',
-      link: `https://github.com/${process.env.NEXT_PUBLIC_CONTACT_GITHUB}`,
-    },
-  ]
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -96,30 +78,26 @@ export default function Contact() {
 
   return (
     <div className="container py-20">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="text-center mb-12"
-      >
+      <div className="text-center mb-12 slide-up">
         <h1 className="text-4xl md:text-6xl font-bold mb-6">
           <span className="text-gradient">Contact</span>
         </h1>
         <p className="text-xl text-gray-600 dark:text-gray-300">
           お気軽にお問い合わせください
         </p>
-      </motion.div>
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
         {/* 連絡先情報 */}
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.2 }}
-        >
+        <div className="slide-in" style={{ '--index': '1' } as React.CSSProperties}>
           <h2 className="text-2xl font-bold mb-6">連絡先情報</h2>
-          <div className="space-y-6">
+          <div className="space-y-6 stagger-container">
             {contactInfo.map((info, index) => (
-              <div key={info.label} className="flex items-start space-x-4">
+              <div
+                key={info.label}
+                className="flex items-start space-x-4 stagger-item"
+                style={{ '--index': index } as React.CSSProperties}
+              >
                 <span className="text-2xl">{info.icon}</span>
                 <div>
                   <h3 className="font-medium text-gray-700 dark:text-gray-300">
@@ -143,14 +121,10 @@ export default function Contact() {
               </div>
             ))}
           </div>
-        </motion.div>
+        </div>
 
         {/* 問い合わせフォーム */}
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.4 }}
-        >
+        <div className="slide-in" style={{ '--index': '2' } as React.CSSProperties}>
           <h2 className="text-2xl font-bold mb-6">お問い合わせフォーム</h2>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
@@ -245,7 +219,7 @@ export default function Contact() {
               {isSubmitting ? '送信中...' : '送信する'}
             </button>
           </form>
-        </motion.div>
+        </div>
       </div>
     </div>
   )

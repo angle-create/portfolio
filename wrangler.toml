@@ -7,7 +7,7 @@ command = "npm run build"
 [site]
 bucket = "out"
 
-# ビルド出力ディレクトリの設定
+# Cloudflare Pages設定
 pages_build_output_dir = "out"
 
 [env.production]
