@@ -10,6 +10,11 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  assetPrefix: '',
+  trailingSlash: true,
+  experimental: {
+    optimizeFonts: false
+  },
   // キャッシュの設定
   onDemandEntries: {
     maxInactiveAge: 60 * 1000, // 1分
@@ -35,6 +40,18 @@ const nextConfig = {
         os: false,
         path: false,
       }
+
+      // フォントローダーの設定を追加
+      config.module.rules.push({
+        test: /\.(woff|woff2|eot|ttf|otf)$/,
+        use: {
+          loader: 'file-loader',
+          options: {
+            name: 'static/media/[name].[hash].[ext]',
+            publicPath: '/_next',
+          },
+        },
+      })
 
       // グローバルオブジェクトの設定
       config.output = {

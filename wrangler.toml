@@ -10,6 +10,11 @@ bucket = "out"
 # Cloudflare Pages設定
 pages_build_output_dir = "out"
 
+[[rules]]
+type = "Text"
+globs = ["**/*.css", "**/*.js"]
+fallthrough = true
+
 [env.production]
 NODE_ENV = "production"
 NODE_VERSION = "18.17.1"

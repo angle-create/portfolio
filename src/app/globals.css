@@ -4,11 +4,12 @@
 
 @layer base {
   :root {
-    --font-inter: 'Inter', sans-serif;
+    --font-inter: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   }
 
   body {
     @apply text-primary dark:text-white bg-white dark:bg-primary;
+    font-family: var(--font-inter);
   }
 
   h1, h2, h3, h4, h5, h6 {
