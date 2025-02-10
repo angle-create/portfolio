@@ -44,10 +44,10 @@ const nextConfig = {
 
       // アセットの処理設定
       config.module.rules.push({
-        test: /\.(woff|woff2|eot|ttf|otf|ico)$/,
+        test: /\.(ico|png|jpg|jpeg|gif|svg)$/,
         type: 'asset/resource',
         generator: {
-          filename: 'static/[hash][ext][query]'
+          filename: 'static/images/[name].[hash][ext]'
         }
       })
 
@@ -67,6 +67,7 @@ const nextConfig = {
       config.output = {
         ...config.output,
         globalObject: 'globalThis',
+        assetModuleFilename: 'static/[hash][ext][query]'
       }
 
       // チャンクサイズの制限を設定

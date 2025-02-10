@@ -15,7 +15,9 @@ export const metadata: Metadata = {
   title: 'Portfolio',
   description: 'My professional portfolio website',
   icons: {
-    icon: '/favicon.ico',
+    icon: [
+      { url: '/static/images/favicon.ico', type: 'image/x-icon' },
+    ],
   },
 }
 
