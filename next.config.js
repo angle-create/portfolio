@@ -11,10 +11,10 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  // 実験的機能の最小化
-  // experimental: {
-  //   optimizeCss: true,
-  // },
+  experimental: {
+    optimizeCss: true,
+    optimizePackageImports: ['framer-motion'],
+  },
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.resolve.fallback = {
@@ -57,9 +57,13 @@ const nextConfig = {
               drop_console: true,
               drop_debugger: true,
               pure_funcs: ['console.log'],
+              passes: 3,
+              reduce_vars: true,
+              reduce_funcs: true,
             },
             mangle: {
               safari10: true,
+              toplevel: true,
             },
             output: {
               ecma: 5,
@@ -72,8 +76,8 @@ const nextConfig = {
       splitChunks: {
         chunks: 'all',
         maxInitialRequests: 25,
-        minSize: 20000,
-        maxSize: 24000000,
+        minSize: 5000,
+        maxSize: 15000,
         cacheGroups: {
           default: false,
           vendors: false,
@@ -84,13 +88,34 @@ const nextConfig = {
             priority: 40,
             enforce: true,
           },
+          commons: {
+            name: 'commons',
+            chunks: 'all',
+            minChunks: 2,
+            priority: 20,
+          },
           lib: {
             test: /[\\/]node_modules[\\/]/,
             priority: 30,
             minChunks: 1,
             reuseExistingChunk: true,
           },
+          styles: {
+            name: 'styles',
+            test: /\.(css|scss)$/,
+            chunks: 'all',
+            enforce: true,
+          },
+          framerMotion: {
+            test: /[\\/]node_modules[\\/]framer-motion[\\/]/,
+            name: 'framer-motion',
+            chunks: 'all',
+            priority: 50,
+          },
         },
+      },
+      runtimeChunk: {
+        name: 'runtime',
       },
     }
 

@@ -14,11 +14,6 @@ pages_build_output_dir = "out"
 NODE_ENV = "production"
 NODE_VERSION = "18.17.1"
 
-# KV Namespaceの設定
-kv_namespaces = [
-  { binding = "BLOG_POSTS", id = "62b20848b258450c865c424216be1292" }
-]
-
 # 環境変数の設定
 [vars]
 NEXT_PUBLIC_CONTACT_EMAIL = "angle.portfolio@proton.me"
@@ -26,6 +21,4 @@ NEXT_PUBLIC_CONTACT_PHONE = "090-6227-8336"
 NEXT_PUBLIC_CONTACT_ADDRESS = "岩手県盛岡市津志田町二丁目8-10"
 
 # シークレット環境変数（Cloudflareダッシュボードで設定）
-# - JWT_SECRET
-# - ADMIN_PASSWORD
 # - RESEND_API_KEY 
