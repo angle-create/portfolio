@@ -10,10 +10,21 @@ bucket = "out"
 # Cloudflare Pages設定
 pages_build_output_dir = "out"
 
-[[rules]]
-type = "Text"
-globs = ["**/*.css", "**/*.js"]
-fallthrough = true
+# MIMEタイプの設定
+[[headers]]
+for = "/_next/static/css/*"
+[headers.values]
+Content-Type = "text/css"
+
+[[headers]]
+for = "/_next/static/js/*"
+[headers.values]
+Content-Type = "application/javascript"
+
+[[headers]]
+for = "/favicon.ico"
+[headers.values]
+Content-Type = "image/x-icon"
 
 [env.production]
 NODE_ENV = "production"

@@ -10,6 +10,7 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  basePath: '',
   assetPrefix: '',
   trailingSlash: true,
   experimental: {
@@ -40,6 +41,15 @@ const nextConfig = {
         os: false,
         path: false,
       }
+
+      // アセットの処理設定
+      config.module.rules.push({
+        test: /\.(woff|woff2|eot|ttf|otf|ico)$/,
+        type: 'asset/resource',
+        generator: {
+          filename: 'static/[hash][ext][query]'
+        }
+      })
 
       // フォントローダーの設定を追加
       config.module.rules.push({
